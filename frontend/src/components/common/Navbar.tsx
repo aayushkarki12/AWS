@@ -1,7 +1,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
-import { ChevronDown, LogOut, Moon, Sun, User as UserIcon } from "lucide-react";
+import { ChevronDown, LogOut, Menu, Moon, Sun, User as UserIcon } from "lucide-react";
 
 import { useAuth } from "@/auth/AuthContext";
 import { useTheme } from "@/auth/ThemeContext";
@@ -17,7 +17,7 @@ const ROLE_LABELS: Record<string, string> = {
   employee: "Employee",
 };
 
-export function Navbar({ title }: { title: string }) {
+export function Navbar({ title, onMenuClick }: { title: string; onMenuClick?: () => void }) {
   const { user, logout } = useAuth();
   const { theme, toggleTheme } = useTheme();
   const navigate = useNavigate();
@@ -39,7 +39,15 @@ export function Navbar({ title }: { title: string }) {
 
   return (
     <header className="relative z-30 flex h-16 shrink-0 items-center justify-between border-b border-ink-800 bg-ink-950/80 px-6 backdrop-blur-sm print:hidden">
-      <div className="flex items-center gap-4">
+      <div className="flex items-center gap-2 sm:gap-4">
+        <button
+          type="button"
+          onClick={onMenuClick}
+          aria-label="Open menu"
+          className="flex h-9 w-9 items-center justify-center rounded-lg text-ink-400 hover:bg-ink-800 hover:text-ink-100 lg:hidden"
+        >
+          <Menu className="h-[18px] w-[18px]" strokeWidth={1.75} />
+        </button>
         <h1 className="text-[15px] font-medium tracking-tight text-ink-100">{title}</h1>
         <LiveClock className="hidden items-baseline text-[13px] sm:flex" />
       </div>

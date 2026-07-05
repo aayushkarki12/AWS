@@ -1,3 +1,4 @@
+import { useEffect, useState } from "react";
 import { Outlet, useLocation } from "react-router-dom";
 
 import { Navbar } from "@/components/common/Navbar";
@@ -19,11 +20,18 @@ export function DashboardLayout() {
   const title = TITLES[location.pathname] ?? "Meridian";
   useAttendanceShortcuts();
 
+  const [mobileSidebarOpen, setMobileSidebarOpen] = useState(false);
+
+  // Close the mobile drawer automatically on navigation.
+  useEffect(() => {
+    setMobileSidebarOpen(false);
+  }, [location.pathname]);
+
   return (
     <div className="flex h-screen bg-ink-950">
-      <Sidebar />
+      <Sidebar mobileOpen={mobileSidebarOpen} onMobileClose={() => setMobileSidebarOpen(false)} />
       <div className="flex min-w-0 flex-1 flex-col">
-        <Navbar title={title} />
+        <Navbar title={title} onMenuClick={() => setMobileSidebarOpen(true)} />
         <main className="flex-1 overflow-y-auto px-6 py-6">
           <div key={location.pathname} className="animate-slide-up">
             <Outlet />
